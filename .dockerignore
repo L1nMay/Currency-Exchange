@@ -1,0 +1,12 @@
+.git
+.gitignore
+README.md
+*.apk
+*.aab
+build/
+.gradle/
+.idea/
+*.iml
+local.properties
+.DS_Store
+*.log
