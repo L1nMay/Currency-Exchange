@@ -1,10 +1,8 @@
 FROM ubuntu:22.04
 
-# Установка переменных окружения
 ENV ANDROID_HOME /opt/android-sdk
 ENV PATH ${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
 
-# Установка зависимостей
 RUN apt-get update && apt-get install -y \
     openjdk-11-jdk \
     wget \
@@ -13,26 +11,18 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Скачивание Android Command Line Tools
 RUN mkdir -p ${ANDROID_HOME}/cmdline-tools \
     && wget -q https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O /tmp/cmdline-tools.zip \
     && unzip -q /tmp/cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools \
     && mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest \
     && rm /tmp/cmdline-tools.zip
 
-# Принятие лицензий Android SDK
 RUN yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
 
-# Установка необходимых компонентов Android SDK
+# Устанавливаем только необходимые компоненты (без patcher;v4)
 RUN ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager \
     "platform-tools" \
     "platforms;android-34" \
-    "build-tools;34.0.0" \
-    "patcher;v4"
-
-# Установка дополнительных компонентов для сборки
-RUN ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager \
-    "cmake;3.22.1" \
-    "ndk;25.1.8937393"
+    "build-tools;34.0.0"
 
 WORKDIR /app

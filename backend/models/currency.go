@@ -1,8 +1,6 @@
 package models
 
-import (
-	"time"
-)
+import "time"
 
 type ExchangeRates struct {
 	Base          string             `json:"base"`
@@ -36,7 +34,7 @@ type APIResponse struct {
 }
 
 type Currency struct {
-	Code  string `json:"code" gorm:"primaryKey"`
-	Name  string `json:"name"`
+	Code   string `json:"code"`
+	Name   string `json:"name"`
 	Symbol string `json:"symbol"`
 }

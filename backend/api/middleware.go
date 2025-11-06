@@ -1,10 +1,6 @@
 package api
 
-import (
-	"time"
-
-	"github.com/gin-gonic/gin"
-)
+import "github.com/gin-gonic/gin"
 
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -30,15 +26,6 @@ func SecurityMiddleware() gin.HandlerFunc {
 		c.Writer.Header().Set("X-XSS-Protection", "1; mode=block")
 		c.Writer.Header().Set("Strict-Transport-Security", "max-age=31536000")
 
-		c.Next()
-	}
-}
-
-func RateLimitMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// Простая реализация rate limiting
-		// В продакшене следует использовать Redis или другую систему
-		time.Sleep(100 * time.Millisecond) // Имитация задержки
 		c.Next()
 	}
 }

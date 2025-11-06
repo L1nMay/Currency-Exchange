@@ -15,7 +15,7 @@ type Config struct {
 func LoadConfig() *Config {
 	return &Config{
 		Port:         getEnv("PORT", "8080"),
-		DatabaseURL:  getEnv("DATABASE_URL", "host=localhost user=currency_user password=secure_password dbname=currency_db port=5432 sslmode=disable"),
+		DatabaseURL:  getEnv("DATABASE_URL", "host=localhost user=currency_user password=secure_password dbname=currency_db port=5433 sslmode=disable"),
 		JWTSecret:    getEnv("JWT_SECRET", "your-secret-key"),
 		EncryptionKey: getEnv("ENCRYPTION_KEY", "your-encryption-key-32-bytes-long"),
 	}

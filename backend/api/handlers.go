@@ -19,20 +19,24 @@ func NewCurrencyHandler(currencyService *services.CurrencyService) *CurrencyHand
 	}
 }
 
-func SetupRoutes(router *gin.Engine, currencyService *services.CurrencyService) {
+func SetupRouter(currencyService *services.CurrencyService) *gin.Engine {
+	router := gin.Default()
+
+	// Middleware
+	router.Use(CORSMiddleware())
+
 	handler := NewCurrencyHandler(currencyService)
 
 	// Health check
 	router.GET("/api/health", handler.HealthCheck)
 
 	// Currency routes
-	api := router.Group("/api")
-	{
-		api.GET("/rates", handler.GetExchangeRates)
-		api.POST("/convert", handler.ConvertCurrency)
-		api.GET("/currencies", handler.GetSupportedCurrencies)
-		api.GET("/rates/:base", handler.GetRatesByBase)
-	}
+	router.GET("/api/rates", handler.GetExchangeRates)
+	router.POST("/api/convert", handler.ConvertCurrency)
+	router.GET("/api/currencies", handler.GetSupportedCurrencies)
+	router.GET("/api/rates/:base", handler.GetRatesByBase)
+
+	return router
 }
 
 func (h *CurrencyHandler) HealthCheck(c *gin.Context) {
@@ -45,7 +49,7 @@ func (h *CurrencyHandler) HealthCheck(c *gin.Context) {
 
 func (h *CurrencyHandler) GetExchangeRates(c *gin.Context) {
 	baseCurrency := c.DefaultQuery("base", "USD")
-	
+
 	rates, err := h.currencyService.GetExchangeRates(baseCurrency)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.APIResponse{

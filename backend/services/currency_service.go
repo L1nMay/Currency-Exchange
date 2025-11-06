@@ -128,12 +128,12 @@ func (cs *CurrencyService) ConvertCurrency(amount float64, from string, to strin
 func (cs *CurrencyService) GetCacheStats() map[string]interface{} {
 	stats := make(map[string]interface{})
 	stats["cache_size"] = len(cs.cache)
-
+	
 	var keys []string
 	for k := range cs.cache {
 		keys = append(keys, k)
 	}
 	stats["cached_currencies"] = keys
-
+	
 	return stats
 }
